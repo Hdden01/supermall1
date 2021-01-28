@@ -7,6 +7,9 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "@better-scroll/core": "^2.1.4",
+    "@better-scroll/pull-down": "^2.1.4",
+    "@better-scroll/pull-up": "^2.1.4",
     "antd": "^4.10.3",
     "axios": "^0.21.1",
     "babel-plugin-import": "^1.13.3",

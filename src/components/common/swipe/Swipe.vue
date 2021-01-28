@@ -21,7 +21,4 @@ export default {
 img {
   width: 100%;
 }
-div {
-  position: relative;
-}
 </style>
