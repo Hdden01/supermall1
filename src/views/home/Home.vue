@@ -6,16 +6,30 @@
         购物商城
       </template>
     </NavBar>
+    <!--解决吸顶，默认是不显示，当滚动到一定的距离时才显示 -->
+    <TabControl
+      :titles="['流行', '新款', '精选']"
+      class="tab-control"
+      @activeText="tabClick"
+      ref="tabControl1"
+      v-show="isTabFixed"
+    ></TabControl>
     <!-- better-scroll 外层的wrapper(封套) -->
-    <BScroll class="wrapper" 
-    ref="scrollTop" 
-    :probeType="1" 
-    :pullUpLoad="true" 
-    @scrollPostion="contentScroll"
-    @pullingUp="contentPull"
+    <!--ref在组件内操作方向和变量
+    @pullingUp下拉加载
+      @scrollPostion判断返回顶部
+     -->
+    <BScroll
+      class="wrapper"
+      ref="scrollTop"
+      :probeType="3"
+      :pullUpLoad="true"
+      @scrollPostion="contentScroll"
+      @pullingUp="contentPull"
     >
       <!-- 轮播图 -->
-      <Swipe :banners="banners"></Swipe>
+      <!--@swiperImageLoad监听图片是否加载完  -->
+      <Swipe :banners="banners" @swiperImageLoad="swiperImageLoad"></Swipe>
       <!-- 详情页 -->
       <HomeRecommendView :recommends="recommends"></HomeRecommendView>
       <!-- 特征特色 -->
@@ -25,6 +39,7 @@
         :titles="['流行', '新款', '精选']"
         class="tab-control"
         @activeText="tabClick"
+        ref="tabControl2"
       ></TabControl>
       <!-- 商品信息 -->
       <GoodsList :goods="goods[currentType].list" class="scroll" />
@@ -59,7 +74,8 @@ export default {
       },
       currentType: "pop",
       activeShow: false,
-      componentKey: 0
+      tabOffsetTop: 0,
+      isTabFixed: false
     };
   },
   components: {
@@ -100,6 +116,10 @@ export default {
           this.currentType = "sell";
           break;
       }
+      // 3.解决两个区域同步
+      // 两个都需要设置,原因是不能确定用户点击的是那个
+      this.$refs.tabControl1.activeIndex = index;
+      this.$refs.tabControl2.activeIndex = index;
     },
     backClick() {
       //    回到顶部
@@ -107,22 +127,34 @@ export default {
       // 直接访问父组件的bscrolldata数据
       // this.$refs.scrollTop.bscroll.scrollTo(0,0,500)
       // 访问父组件的方法
-      this.$refs.scrollTop.top(0,0,500)
+      this.$refs.scrollTop.top && this.$refs.scrollTop.top(0, 0, 500);
     },
     // 实现回到顶部按钮的显示和隐藏
-    contentScroll(postion){
-     if(postion.y<-1000){
-       this.activeShow=true;
-     }else{
-       this.activeShow=false;
-     }
+    contentScroll(postion) {
+      // 判断是否显示
+      if (postion.y < -1000) {
+        this.activeShow = true;
+      } else {
+        this.activeShow = false;
+      }
+      // 判断tabcontrol是否吸顶(position:fixed)
+      this.isTabFixed = -postion.y > this.tabOffsetTop;
+      // console.log(this.isTabFixed);
     },
-    contentPull(){
+    contentPull() {
       //发送网络请求，请求更多页的数据
       //等待数据请求完成后，并且将新的数据展示出来后
       this.getHomeGoodsdata(this.currentType);
       //声明这个上拉加载执行完毕  没有就执行一次
-      this.$refs.scrollTop.bscroll.finishPullUp();
+        this.$refs.scrollTop.bscroll &&
+        this.$refs.scrollTop.bscroll.finishPullUp();
+    },
+    //2. 监听图片何时加载完
+    // 此处只需要执行一次
+    swiperImageLoad() {
+      // 获取第二个区域的位置
+      this.tabOffsetTop = this.$refs.tabControl2.$el.offsetTop;
+      console.log(this.$refs.tabControl2.$el);
     },
 
     /**
@@ -175,26 +207,29 @@ export default {
 .home {
   position: relative;
   /* 解决被盖住 */
-  padding-top: 43px;
+  /* padding-top: 43px; */
   /* 百分之百视口 viewport height */
   height: 100vh;
 }
 .home .nav {
-  position: fixed;
+  /* 解决原生浏览器随滚动而滚动 */
+  /* position: fixed; */
   /* 解决定位元素脱离文档流  常规流盒子排列会忽略定位元素*/
-  z-index: 99;
+  /* z-index: 99;
   top: 0;
   left: 0;
   right: 0;
-  font-weight: 700;
+  font-weight: 700; */
 }
-/* .tab-control {
-  position: sticky;
-  top: 43px;
-  height: 46px;
-  line-height: 46px;
+.tab-control {
+  position: relative;
+  z-index: 1;
   background: #fff;
-} */
+  margin-top: 0;
+  height: 44px;
+  line-height: 44px;
+  margin-top: -1px;
+}
 .scroll {
   margin-bottom: 60px;
 }

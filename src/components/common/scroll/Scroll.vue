@@ -18,46 +18,53 @@ export default {
       bscroll: null
     };
   },
-  props:{
-    probeType:{
-      type:Number,
+  props: {
+    probeType: {
+      type: Number
     },
-    pullUpLoad:{
-      type:Boolean
+    pullUpLoad: {
+      type: Boolean
     }
-  }
-  ,
+  },
   methods: {
     scroll() {
-         console.log(this.probeType);
+      console.log(this.probeType);
       this.bscroll = new BScroll(this.$refs.wrapper, {
         // 侦测滚动
-        probeType:this.probeType,
+        probeType: this.probeType,
         // 允许下拉
         pullUpLoad: this.pullUpLoad,
-        click: true,
+        click: true
       });
+      console.log(this.bscroll);
       // 监听位置
-      this.bscroll.on('scroll',(postion)=>{
-       this.$emit('scrollPostion',postion);
-      })
-      this.bscroll.on("pullingUp", () => {
-        this.$emit('pullingUp');
-        // this.bscroll.finishPullUp(); 
-      });
-    
+      if (this.probeType == 3||this.probeType == 2) {
+        this.bscroll.on("scroll", postion => {
+          this.$emit("scrollPostion", postion);
+        });
+      }
+
+      // 下拉加载事件
+      if (this.pullUpLoad) {
+        this.bscroll.on("pullingUp", () => {
+          this.$emit("pullingUp");
+          // this.bscroll.finishPullUp();
+        });
+      }
     },
     //回到顶部函数的封装
-    top(x,y,time){
-        this.bscroll.scrollTo(x,y,time);
+    top(x, y, time) {
+      // 首先判断这个存在吗，为false后面的不会执行
+      this.bscroll && this.bscroll.scrollTo(x, y, time);
     }
   },
   mounted() {
     this.scroll();
   },
   // 解决每次刷新无法滚动
-  updated(){
-  this.bscroll.refresh();
+  updated() {
+    // console.log("xxxxxxxxx");
+    this.bscroll && this.bscroll.refresh();
   }
 };
 </script>
