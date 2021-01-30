@@ -58,6 +58,7 @@ export default {
       this.bscroll && this.bscroll.scrollTo(x, y, time);
     },
     getScrollY() {
+      // 直接返回滚动的距离
     return this.bscroll ? this.bscroll.y : 0;
   }
   },
