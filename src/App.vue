@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <!-- 路由展示 -->
-    <keep-alive>
+    <keep-alive exclude="Detail">
       <router-view></router-view>
     </keep-alive>
     <!-- tabbar -->

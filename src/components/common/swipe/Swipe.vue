@@ -3,7 +3,7 @@
     <van-swipe :autoplay="3000">
       <van-swipe-item v-for="(image, index) in banners" :key="index">
         <a :href="image.link"
-          ><img :src="image.image" @load.once="imageLoad"
+          ><img :src="image.image" @load="imageLoad"
         /></a>
       </van-swipe-item>
     </van-swipe>

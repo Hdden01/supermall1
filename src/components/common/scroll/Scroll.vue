@@ -28,7 +28,7 @@ export default {
   },
   methods: {
     scroll() {
-      console.log(this.probeType);
+      // console.log(this.probeType);
       this.bscroll = new BScroll(this.$refs.wrapper, {
         // 侦测滚动
         probeType: this.probeType,
@@ -36,9 +36,9 @@ export default {
         pullUpLoad: this.pullUpLoad,
         click: true
       });
-      console.log(this.bscroll);
+      // console.log(this.bscroll);
       // 监听位置
-      if (this.probeType == 3||this.probeType == 2) {
+      if (this.probeType == 3 || this.probeType == 2) {
         this.bscroll.on("scroll", postion => {
           this.$emit("scrollPostion", postion);
         });
@@ -56,7 +56,10 @@ export default {
     top(x, y, time) {
       // 首先判断这个存在吗，为false后面的不会执行
       this.bscroll && this.bscroll.scrollTo(x, y, time);
-    }
+    },
+    getScrollY() {
+    return this.bscroll ? this.bscroll.y : 0;
+  }
   },
   mounted() {
     this.scroll();
@@ -65,7 +68,8 @@ export default {
   updated() {
     // console.log("xxxxxxxxx");
     this.bscroll && this.bscroll.refresh();
-  }
+    // console.log(this.bscroll);
+  },
 };
 </script>
 

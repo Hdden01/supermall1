@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 const About = () => import('views/category/Aboout');
 const Home=()=>import('views/home/Home');
+const Detail=()=>import('views/detail/Detail')
 // 1.安装路由
 Vue.use(VueRouter);
 const routes = [
@@ -17,6 +18,9 @@ const routes = [
     {
         path:'/about',
         component:About
+    },{
+        path:'/detail/:iid',
+        component:Detail
     }
 ]
 // 2.创建实例对象

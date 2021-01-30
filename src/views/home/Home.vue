@@ -75,7 +75,8 @@ export default {
       currentType: "pop",
       activeShow: false,
       tabOffsetTop: 0,
-      isTabFixed: false
+      isTabFixed: false,
+      saveY:0
     };
   },
   components: {
@@ -90,6 +91,17 @@ export default {
     HomeRecommendView,
     HomeFeaturView
   },
+   activated(){
+    this.$refs.scrollTop.top(0,this.saveY)
+    // console.log(this.saveY);
+    //进行刷新
+    this.$refs.scrollTop.bscroll.refresh();
+  },
+  // 离开时获取滚动的位置
+  deactivated(){
+    this.saveY=this.$refs.scrollTop.getScrollY();
+  }
+  ,
   // 标注是异步函数
   created() {
     // 1.请求多个数据
@@ -99,7 +111,12 @@ export default {
     this.getHomeGoodsdata("pop");
     this.getHomeGoodsdata("new");
     this.getHomeGoodsdata("sell");
+    // console.log('创建Home');
   },
+  destroyed(){
+    console.log('销毁');
+  }
+  ,
   methods: {
     /**
      *事件监听相关的方法
@@ -154,7 +171,7 @@ export default {
     swiperImageLoad() {
       // 获取第二个区域的位置
       this.tabOffsetTop = this.$refs.tabControl2.$el.offsetTop;
-      console.log(this.$refs.tabControl2.$el);
+      // console.log(this.$refs.tabControl2.$el);
     },
 
     /**
@@ -176,7 +193,7 @@ export default {
     getHomeGoodsdata(type) {
       // 为了请求下一页数据
       let page = this.goods[type].page + 1;
-      console.log(page);
+      // console.log(page);
       // 2.商品展示数据
       getHomeGoodsdata(type, page).then(res => {
         //  此处不可使用此方法，因为还有陆续页码的数据需要添加到该数组处后面。

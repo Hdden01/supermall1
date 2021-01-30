@@ -35,7 +35,7 @@ export default {
       return this.$route.path.indexOf(this.link) !== -1;
     },
     isColor() {
-        console.log(this.cor);
+        // console.log(this.cor);
       return this.isActive ?{color:this.cor}:{};
     }
   }
