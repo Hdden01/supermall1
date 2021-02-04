@@ -35,6 +35,8 @@ export default {
   methods: {
     clickActive(index) {
       this.currentIndex = index;
+      // 点击标题跳转到对应的内容
+      this.$emit('titleClick', index);
     },
     backClick(){
         // 返回上一页go(-1)返回上一页

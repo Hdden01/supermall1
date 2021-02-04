@@ -11,7 +11,9 @@
 export default {
   name: "DetailSwiper",
   data() {
-    return {};
+    return {
+      isLoad:true
+    }
   },
   props: {
     topImages: {

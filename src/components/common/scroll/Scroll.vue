@@ -34,10 +34,13 @@ export default {
         probeType: this.probeType,
         // 允许下拉
         pullUpLoad: this.pullUpLoad,
-        click: true
+        click: true,
+        // mouseWheel: true, //开启鼠标滚轮
+        // disableMouse: false, //启用鼠标拖动
+        disableTouch: false //启用手指触摸
       });
       // console.log(this.bscroll);
-      // 监听位置
+      // 监听滚动事件
       if (this.probeType == 3 || this.probeType == 2) {
         this.bscroll.on("scroll", postion => {
           this.$emit("scrollPostion", postion);
@@ -59,8 +62,8 @@ export default {
     },
     getScrollY() {
       // 直接返回滚动的距离
-    return this.bscroll ? this.bscroll.y : 0;
-  }
+      return this.bscroll ? this.bscroll.y : 0;
+    }
   },
   mounted() {
     this.scroll();
@@ -70,7 +73,7 @@ export default {
     // console.log("xxxxxxxxx");
     this.bscroll && this.bscroll.refresh();
     // console.log(this.bscroll);
-  },
+  }
 };
 </script>
 

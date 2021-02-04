@@ -51,6 +51,7 @@
 <script>
 import NavBar from "components/common/navbar/NavBar";
 import Swipe from "components/common/swipe/Swipe";
+import{itemListenerMixin} from '../../common/mixin';
 import BScroll from "components/common/scroll/Scroll";
 import TabControl from "components/content/tabControl/TabControl";
 import GoodsList from "components/content/goods/GoodsList";
@@ -76,7 +77,7 @@ export default {
       activeShow: false,
       tabOffsetTop: 0,
       isTabFixed: false,
-      saveY:0
+      saveY: 0,
     };
   },
   components: {
@@ -91,17 +92,19 @@ export default {
     HomeRecommendView,
     HomeFeaturView
   },
-   activated(){
-    this.$refs.scrollTop.top(0,this.saveY)
+  activated() {
+    this.$refs.scrollTop.top(0, this.saveY);
     // console.log(this.saveY);
     //进行刷新
-    this.$refs.scrollTop.bscroll.refresh();
+    // this.$refs.scrollTop.bscroll.refresh();
   },
   // 离开时获取滚动的位置
-  deactivated(){
-    this.saveY=this.$refs.scrollTop.getScrollY();
-  }
-  ,
+  deactivated() {
+    // 1.保存Y值
+    this.saveY = this.$refs.scrollTop.getScrollY();
+    // 2.取消全局事件的监听
+    // this.$bus.$off('imageLoad',this.itemImgListener);
+  },
   // 标注是异步函数
   created() {
     // 1.请求多个数据
@@ -112,11 +115,14 @@ export default {
     this.getHomeGoodsdata("new");
     this.getHomeGoodsdata("sell");
     // console.log('创建Home');
+    // console.log(this.goods);
   },
-  destroyed(){
-    console.log('销毁');
-  }
-  ,
+  // 事件总线  可以解决跨组件操作GoodsListItem没有直接导入home组件内。
+  // 混入
+ mixins:[itemListenerMixin],
+  destroyed() {
+    console.log("销毁");
+  },
   methods: {
     /**
      *事件监听相关的方法
@@ -163,7 +169,7 @@ export default {
       //等待数据请求完成后，并且将新的数据展示出来后
       this.getHomeGoodsdata(this.currentType);
       //声明这个上拉加载执行完毕  没有就执行一次
-        this.$refs.scrollTop.bscroll &&
+      this.$refs.scrollTop.bscroll &&
         this.$refs.scrollTop.bscroll.finishPullUp();
     },
     //2. 监听图片何时加载完

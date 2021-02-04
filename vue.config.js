@@ -14,5 +14,8 @@ module.exports = {
         'views': '@/views',
       }
     }
-  }
+  },
+  devServer: {
+    host: 'localhost'
+}
 }

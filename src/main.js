@@ -8,6 +8,7 @@ import {Lazyload} from 'vant';
 Vue.use(Lazyload);
 import router from './router';
 Vue.config.productionTip = false
+Vue.prototype.$bus=new Vue();
 
 new Vue({
   router,
