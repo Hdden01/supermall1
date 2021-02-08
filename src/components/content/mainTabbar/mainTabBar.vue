@@ -11,7 +11,7 @@
           首页
         </template>
       </TabBarItem>
-      <TabBarItem link="/about"  cor="#e56971">
+      <TabBarItem link="category"  cor="#e56971">
         <template v-slot:icon>
           <van-icon name="apps-o" />
            </template>
@@ -22,7 +22,7 @@
         分类
         </template>
       </TabBarItem>
-      <TabBarItem  cor="#e56971">
+      <TabBarItem  cor="#e56971" link="/cart">
         <template v-slot:icon> 
            <van-icon name="shopping-cart-o" />
         </template>

@@ -36,6 +36,7 @@ export default {
     clickActive(index) {
       this.currentIndex = index;
       // 点击标题跳转到对应的内容
+      // 携带参数发送事件
       this.$emit('titleClick', index);
     },
     backClick(){

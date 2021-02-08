@@ -29,7 +29,7 @@ export default {
 <style scoped>
 /* 进行插槽布局 */
 .nav-bar {
-  /* width: 100%; */
+  width: 100%;
   display: flex;
   line-height:44px;
   height:44px;

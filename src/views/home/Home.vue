@@ -190,9 +190,10 @@ export default {
         // 使用变量来接收数据
         // 函数内的变量都是局部变量(外部无法使用)，函数执行完变量会被内存回收，
         // 轮播图数据
-        this.banners = res.data.banner.list;
+        let data=res.data;
+        this.banners = data.banner.list;
         // 推荐信息数据
-        this.recommends = res.data.recommend.list;
+        this.recommends = data.recommend.list;
         // console.log(res.data);
       });
     },
@@ -234,7 +235,7 @@ export default {
   /* 百分之百视口 viewport height */
   height: 100vh;
 }
-.home .nav {
+/* .home .nav { */
   /* 解决原生浏览器随滚动而滚动 */
   /* position: fixed; */
   /* 解决定位元素脱离文档流  常规流盒子排列会忽略定位元素*/
@@ -243,7 +244,7 @@ export default {
   left: 0;
   right: 0;
   font-weight: 700; */
-}
+/* } */
 .tab-control {
   position: relative;
   z-index: 1;

@@ -26,13 +26,16 @@ export default {
     itemClick() {
       // 1.详情页需要返回
       // 当前数组内的iid(将iid内的数据到路由界面进行展示)
+      let iid=this.goodsItem.iid;
     if (this.$route.path.indexOf('/home')!==-1) {
-      this.$router.push('/detail/'+this.goodsItem.iid);
+      this.$router.push({path:'/detail', query: {iid}});
     }
     else if (this.$route.path.indexOf('/detail')!==-1) {
-      const path=this.$route.path;
-      this.$router.push(path.replace(path,this.goodsItem.item_id));
-      this.$emit('itemClick');
+      let path=this.$route.path;
+      // path.replace(path,this.goodsItem.item_id)
+      let item_id=this.goodsItem.item_id;
+      this.$router.push({query: {item_id}});
+      this.$bus.$emit('itemClick');
     }
     },
     imageLoad(){

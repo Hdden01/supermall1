@@ -29,11 +29,18 @@
       <!-- 推荐信息展示 -->
       <GoodsList :goods="recommends" ref="recommend" />
     </BScroll>
-    <BackTop class="top" @click.native="DetailTop"></BackTop>
+    <BackTop
+      class="top"
+      @click.native="DetailTop"
+      v-show="postionTop"
+    ></BackTop>
+    <DetailBottom class="bottom" @addToCart="addToCart" />
   </div>
 </template>
 
 <script>
+// 1.将actions映射到method是内
+import {mapActions} from 'vuex'
 import DetailNavBar from "views/detail/childComps/DetailNavBar";
 import {
   getDetail,
@@ -49,6 +56,7 @@ import DetailShopInfo from "views/detail/childComps/DetailShopInfo";
 import DetailGoodsInfo from "views/detail/childComps/DetailGoodsInfo";
 import DetailParamInfo from "views/detail/childComps/DetailParamInfo";
 import DetailCommentInfo from "views/detail/childComps/DetailCommentInfo";
+import DetailBottom from "views/detail/childComps/DetailBottom";
 import BackTop from "components/content/backTop/BackTop";
 import BScroll from "components/common/scroll/Scroll";
 export default {
@@ -63,7 +71,8 @@ export default {
     DetailGoodsInfo,
     DetailParamInfo,
     DetailCommentInfo,
-    BackTop
+    BackTop,
+    DetailBottom
   },
   // 3.
   data() {
@@ -77,13 +86,18 @@ export default {
       paramInfo: {},
       rate: {},
       themeTopYs: [],
-      currentIndex: 0
+      currentIndex: 0,
+      postionTop: false,
+      item_id: null
     };
   },
   created() {
     //   1.保存传入的iid(动态路由)
-    this.iid = this.$route.params.iid;
+    // this.iid = this.$route.params.iid;
     // console.log(this.$route.params);
+    // 1.2 query传参
+    this.iid = this.$route.query.iid;
+    // console.log(this.$route);
     // 2.根据Fiid请求数据进行展示
     this.getDetailData(this.iid);
   },
@@ -132,13 +146,38 @@ export default {
           // this.recommends =res;
           const data = res.data;
           this.recommends = data.list;
-          console.log(this.recommends);
+          // console.log(this.recommends);
         })
         .catch(err => {
           console.log(err);
         });
     },
-
+    // 2.使用映射
+    // this.addToCart(product)代替下面
+    //  this.$store.dispatch("addCart", product)
+     ...mapActions(['addCart'])
+    ,
+    // 2.DetailBottom内发送的事件
+    // 实现添加到购物车
+    addToCart() {
+      // 3.获取购物车需要展示的信息
+      const product = {};
+      product.image = this.topImages[0];
+      product.title = this.goods.title;
+      product.desc = this.goods.desc;
+      product.price = this.goods.realPrice;
+      // iid需要传递  作为商品的标识
+      product.iid = this.iid;
+      // console.log(this.goods);
+      // actions的promise可以在这里接收到，actions内的方法就是拿到组件内去使用的
+      // this.$store.dispatch("addCart", product).then(res => {
+      //   console.log(res);
+      // });
+      this.addCart(product).then(res=>{
+        console.log(res);
+      })
+      // window.alert('已加入购物车')
+    },
     // 监听图片加载完就刷新
     swiperImageLoad() {
       this.$refs.scroll.bscroll.refresh();
@@ -154,7 +193,7 @@ export default {
       this.themeTopYs.push(this.$refs.recommend.$el.offsetTop);
       // 赋值最大值解决滚动导航变色if过于繁琐的问题
       this.themeTopYs.push(Number.MAX_VALUE);
-      console.log(this.themeTopYs);
+      // console.log(this.themeTopYs);
     },
     // imageLoad(){
     //     this.$refs.scroll.bscroll.refresh();
@@ -184,14 +223,20 @@ export default {
       //postionY在=7583到7809之间,index=2;
       // postionY 大于等于7809值,index=3;
       // -1是因为最后一个值是为了解决item+1取不到的问题，不需要循环
-      for (let item = 0; item < len-1; item++) {
+      for (let item = 0; item < len - 1; item++) {
         if (
           this.currentIndex !== item &&
           postionY >= this.themeTopYs[item] &&
-            postionY < this.themeTopYs[item + 1]
+          postionY < this.themeTopYs[item + 1]
         ) {
           this.currentIndex = item;
           this.$refs.detailnav.currentIndex = this.currentIndex;
+        }
+        // 隐藏显示
+        if (-postion.y > 1000) {
+          this.postionTop = true;
+        } else {
+          this.postionTop = false;
         }
         // 普通方法
         //再次判断当currentIndex(初始为0)不等于item(到1的时候变色)
@@ -234,15 +279,19 @@ export default {
   top: 44px;
   /* 去除顶部的tabbar */
   /* 若不给根home添加高度，此处会不显示因为bottom */
-  bottom: 0;
+  bottom: 58px;
   left: 0;
   right: 0;
   /* height: calc(100%-44px); */
 }
 .top {
   position: fixed;
-  bottom: 40px;
+  bottom: 60px;
   z-index: 99;
   right: 6px;
+}
+.bottom {
+  position: fixed;
+  bottom: 0;
 }
 </style>

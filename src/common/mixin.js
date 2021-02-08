@@ -11,6 +11,6 @@ mounted () {
         this.$refs.scrollTop.bscroll.refresh();
       }
       this.$bus.$on("imageLoad",this.itemImgListener);
-      console.log('xxxx');
+    //   console.log('xxxx');
 }
 }

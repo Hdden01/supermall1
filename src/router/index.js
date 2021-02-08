@@ -1,8 +1,9 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-const About = () => import('views/category/Aboout');
+const Category = () => import('views/category/Category');
 const Home=()=>import('views/home/Home');
-const Detail=()=>import('views/detail/Detail')
+const Detail=()=>import('views/detail/Detail');
+const Cart=()=>import ('views/cart/Cart');
 // 1.安装路由
 Vue.use(VueRouter);
 const routes = [
@@ -16,11 +17,14 @@ const routes = [
         component: Home
     },
     {
-        path:'/about',
-        component:About
+        path:'/category',
+        component:Category
     },{
-        path:'/detail/:iid',
+        path:'/detail',
         component:Detail
+    },{
+        path:'/cart',
+        component:Cart
     }
 ]
 // 2.创建实例对象

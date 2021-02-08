@@ -1,5 +1,5 @@
 import axios from "axios";
-export async function request(config) {
+export  function request(config) {
     // 创建axios实例
     const instance=axios.create({
         baseURL:'http://152.136.185.210:7878/api/m5',
@@ -12,6 +12,6 @@ export async function request(config) {
         return err;
     })
     // 发送真正的网络请求
-    return await instance(config);
+    return  instance(config);
 
 }
