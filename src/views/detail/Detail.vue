@@ -175,6 +175,8 @@ export default {
       // });
       this.addCart(product).then(res=>{
         console.log(res);
+        console.log(this.$toast);
+        this.$toast.show(res,1500)
       })
       // window.alert('已加入购物车')
     },

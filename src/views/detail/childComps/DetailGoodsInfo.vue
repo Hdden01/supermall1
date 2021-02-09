@@ -40,6 +40,7 @@ export default {
       // 判断所有的图片都加载完，那么进行一次回调即可。
       // 否则每次每张图片加载完都需要回调一次
       if (++this.counter == this.imageLength) {
+        console.log(this.imageLength);
         this.$emit("imgLoad");
       }
     }

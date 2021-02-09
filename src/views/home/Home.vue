@@ -168,6 +168,7 @@ export default {
       //发送网络请求，请求更多页的数据
       //等待数据请求完成后，并且将新的数据展示出来后
       this.getHomeGoodsdata(this.currentType);
+      console.log('bbb');
       //声明这个上拉加载执行完毕  没有就执行一次
       this.$refs.scrollTop.bscroll &&
         this.$refs.scrollTop.bscroll.finishPullUp();
